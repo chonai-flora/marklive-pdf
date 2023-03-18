@@ -1,16 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import './App.css';
-import { MdState } from './states/state';
 import Editor from './components/Editor';
-
-const mapStateToProps = (state: MdState) => {
-  return {
-    title: state.title,
-    mdText: state.text
-  };
-};
 
 const App = () => {
   // eslint-disable-next-line
@@ -46,4 +37,4 @@ const App = () => {
   );
 }
 
-export default connect(mapStateToProps)(App);
+export default App;

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/md-editor-with-pdf-generator/static/css/main.f7705934.css",
-    "main.js": "/md-editor-with-pdf-generator/static/js/main.4b11e499.js",
+    "main.js": "/md-editor-with-pdf-generator/static/js/main.f5eedcd2.js",
     "static/js/27.0cfc1235.chunk.js": "/md-editor-with-pdf-generator/static/js/27.0cfc1235.chunk.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/md-editor-with-pdf-generator/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/md-editor-with-pdf-generator/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
@@ -67,6 +67,6 @@
   },
   "entrypoints": [
     "static/css/main.f7705934.css",
-    "static/js/main.4b11e499.js"
+    "static/js/main.f5eedcd2.js"
   ]
 }
