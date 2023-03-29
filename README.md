@@ -1,4 +1,4 @@
-# md-editor-with-pdf-generator
+# marklive-pdf
 
 作成・編集したMarkdown文書をPDF化することができます。  
 

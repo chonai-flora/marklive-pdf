@@ -1,5 +1,5 @@
 {
-  "name": "md-editor-with-pdf-generator",
+  "name": "marklive-pdf",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -71,5 +71,5 @@
     "source-map-loader": "^4.0.1",
     "source-map-support": "^0.5.21"
   },
-  "homepage": "https://chonai-flora.github.io/md-editor-with-pdf-generator"
+  "homepage": "https://chonai-flora.github.io/marklive-pdf"
 }

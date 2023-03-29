@@ -2,6 +2,7 @@ import React from 'react';
 
 import './App.css';
 import Editor from './components/Editor';
+import headerImg from './assets/header.png';
 
 const App = () => {
   // eslint-disable-next-line
@@ -14,11 +15,7 @@ const App = () => {
   return (
     <div>
       <header className='header'>
-        <h1>
-          MD Editor<br />
-          with<br />
-          PDF Generator
-        </h1>
+        <img src={headerImg} alt='Header Image' />
       </header>
 
       <div className='warpper'>

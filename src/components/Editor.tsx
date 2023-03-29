@@ -22,7 +22,7 @@ const Editor = () => {
     });
     useEffect(() => {
         const fetchReadme = async () => {
-            const path = "https://raw.githubusercontent.com/chonai-flora/md-editor-with-pdf-generator/main/README.md";
+            const path = "https://raw.githubusercontent.com/chonai-flora/marklive-pdf/main/README.md";
             const resp = await fetch(path);
             const text = await resp.text();
             setVisible({ ...state, value: text });
@@ -146,8 +146,8 @@ const Editor = () => {
                 {state.value && (
                     state.value!.split('<br>')
                         .map((section) => <PdfPreview source={section} />))}
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };
 
