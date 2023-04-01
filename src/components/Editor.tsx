@@ -51,7 +51,7 @@ const Editor = () => {
             });
         }
     }, []);
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true });
 
     const saveAsMd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
@@ -66,7 +66,7 @@ const Editor = () => {
     }
 
     return (
-        <div data-color-mode='light'>
+        <div data-color-mode='light' >
             <input
                 type='text'
                 value={mdTitle}
@@ -76,10 +76,7 @@ const Editor = () => {
             />
 
             <div {...getRootProps()}>
-                <input
-                    {...getInputProps()}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => console.log(e.target.value)}
-                />
+                <input {...getInputProps()} />
                 <MDEditor
                     autoFocus
                     value={state.value}
@@ -177,7 +174,7 @@ const Editor = () => {
                     state.value.split('<br>').map((section) => <PdfPreview source={section} />)
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 
