@@ -66,27 +66,31 @@ html {
 
 @media all {
     .page-break {
-      display: none;
+        display: none;
     }
-  }
+}
   
-  @media print {
+@media print {
     html, body {
-      height: initial !important;
-      overflow: initial !important;
-      -webkit-print-color-adjust: exact;
+        height: initial !important;
+        overflow: initial !important;
+        -webkit-print-color-adjust: exact;
     }
-  }
-  
-  @media print {
+}
+
+@media print {
     .page-break {
-      margin-top: 1rem;
-      display: block;
-      page-break-before: auto;
+        margin-top: 1rem;
+        display: block;
+        page-break-before: auto;
     }
-  }
-  
-  @page {
+}
+
+@page {
     size: auto;
     margin: 30px;
-  }
+}
+
+img {
+    width: 50%;
+}

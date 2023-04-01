@@ -15,7 +15,7 @@ const App = () => {
   return (
     <div>
       <header className='header'>
-        <img src={headerImg} alt='Header Image' />
+        <img src={headerImg} alt='header image' />
       </header>
 
       <div className='warpper'>
