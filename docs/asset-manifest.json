@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/marklive-pdf/static/css/main.7f52db3e.css",
-    "main.js": "/marklive-pdf/static/js/main.17809cf9.js",
-    "static/js/27.52bc2cfc.chunk.js": "/marklive-pdf/static/js/27.52bc2cfc.chunk.js",
+    "main.css": "/marklive-pdf/static/css/main.296e24ba.css",
+    "main.js": "/marklive-pdf/static/js/main.ccd18883.js",
+    "static/js/522.78447c7a.chunk.js": "/marklive-pdf/static/js/522.78447c7a.chunk.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/marklive-pdf/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/marklive-pdf/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/marklive-pdf/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -66,7 +66,7 @@
     "index.html": "/marklive-pdf/index.html"
   },
   "entrypoints": [
-    "static/css/main.7f52db3e.css",
-    "static/js/main.17809cf9.js"
+    "static/css/main.296e24ba.css",
+    "static/js/main.ccd18883.js"
   ]
 }

@@ -92,5 +92,5 @@ html {
 }
 
 img {
-    width: 50%;
+    width: min(50%, 25em);
 }

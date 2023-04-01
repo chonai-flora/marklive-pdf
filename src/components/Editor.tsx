@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import 'katex/dist/katex.css';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { saveAs } from 'file-saver';
 import ReactToPrint from 'react-to-print';
+import { useDropzone } from 'react-dropzone';
 import MDEditor, { MDEditorProps } from '@uiw/react-md-editor';
 
 import PdfPreview from './PdfPreview';
@@ -30,6 +31,28 @@ const Editor = () => {
         fetchReadme();
     }, []);
 
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        const acceptedFile = acceptedFiles.slice(-1)[0];
+        const filename = acceptedFile.name || ``;
+        const extension = filename.split('.').pop()?.toLowerCase();
+        if (extension !== undefined && extension !== 'md') {
+            setTitle("file type is not supported");
+            setVisible({
+                ...state,
+                value: "このファイルのプレビューを表示できません。拡張子が`md`のファイルのみ対応しています。"
+            });
+        }
+        else {
+            const text = await acceptedFile.text();
+            setTitle(filename.split('.')[0]);
+            setVisible({
+                ...state,
+                value: text
+            });
+        }
+    }, []);
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
     const saveAsMd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
 
@@ -51,27 +74,34 @@ const Editor = () => {
                 placeholder="タイトル"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             />
-            <MDEditor
-                autoFocus
-                value={state.value}
-                previewOptions={{
-                    linkTarget: '_blank',
-                    remarkPlugins: [remarkMath],
-                    rehypePlugins: [rehypeKatex]
-                }}
-                height={400}
-                highlightEnable={state.highlightEnable}
-                hideToolbar={!state.hideToolbar}
-                enableScroll={state.enableScroll}
-                visibleDragbar={state.visibleDragbar}
-                textareaProps={{
-                    placeholder: "記事やレポートをMarkdown形式で記述してください",
-                }}
-                preview={state.preview}
-                onChange={(newValue = '') => {
-                    setVisible({ ...state, value: newValue });
-                }}
-            />
+
+            <div {...getRootProps()}>
+                <input
+                    {...getInputProps()}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => console.log(e.target.value)}
+                />
+                <MDEditor
+                    autoFocus
+                    value={state.value}
+                    previewOptions={{
+                        linkTarget: '_blank',
+                        remarkPlugins: [remarkMath],
+                        rehypePlugins: [rehypeKatex]
+                    }}
+                    height={400}
+                    highlightEnable={state.highlightEnable}
+                    hideToolbar={!state.hideToolbar}
+                    enableScroll={state.enableScroll}
+                    visibleDragbar={state.visibleDragbar}
+                    textareaProps={{
+                        placeholder: "記事やレポートをMarkdown形式で記述してください",
+                    }}
+                    preview={state.preview}
+                    onChange={(newValue = '') => {
+                        setVisible({ ...state, value: newValue });
+                    }}
+                />
+            </div>
 
             <div className='doc-tools'>
                 <label>
@@ -144,8 +174,8 @@ const Editor = () => {
             <h3>PDF Preview</h3>
             <div ref={pdfRef}>
                 {state.value && (
-                    state.value!.split('<br>')
-                        .map((section) => <PdfPreview source={section} />))}
+                    state.value.split('<br>').map((section) => <PdfPreview source={section} />)
+                )}
             </div>
         </div>
     );
