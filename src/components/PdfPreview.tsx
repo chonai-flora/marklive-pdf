@@ -11,7 +11,7 @@ const PdfPreview = (props: { source: string }) => {
                 disableCopy={true}
                 remarkPlugins={[remarkMath]}
                 rehypePlugins={[rehypeKatex]}
-                source={props.source || ``}
+                source={props.source || ""}
             />
         </div>
     );
