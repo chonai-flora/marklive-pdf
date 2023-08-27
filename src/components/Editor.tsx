@@ -1,150 +1,166 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import 'katex/dist/katex.css';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { saveAs } from 'file-saver';
-import ReactToPrint from 'react-to-print';
-import { useDropzone } from 'react-dropzone';
-import MDEditor, { MDEditorProps } from '@uiw/react-md-editor';
+import "katex/dist/katex.css";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import ReactToPrint from "react-to-print";
 
-import PdfPreview from './PdfPreview';
+import { saveAs } from "file-saver";
+import { useDropzone } from "react-dropzone";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useRef, useState, useCallback } from "react";
+import MDEditor, { MDEditorProps } from "@uiw/react-md-editor";
+
+import PdfPreview from "./PdfPreview";
+
+import { MarkdownStateProps, updateMarkdown } from "../slices/markdown-slice";
 
 const Editor = () => {
     const pdfRef = useRef(null);
-
-    const [mdTitle, setTitle] = useState<string>(``);
-    const [state, setVisible] = useState<MDEditorProps>({
+    const dispatch = useDispatch();
+    const markdownState = useSelector((state: { markdown: MarkdownStateProps }) => state.markdown);
+    const [editorState, setEditorState] = useState<MDEditorProps>({
         visibleDragbar: true,
         hideToolbar: true,
         highlightEnable: true,
         enableScroll: true,
-        value: ``,
-        preview: 'live',
+        value: markdownState.text,
+        preview: "live",
     });
-    useEffect(() => {
-        const fetchReadme = async () => {
-            const path = "https://raw.githubusercontent.com/chonai-flora/marklive-pdf/main/README.md";
-            const resp = await fetch(path);
-            const text = await resp.text();
-            setVisible({ ...state, value: text });
-        }
-        fetchReadme();
-    }, []);
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        const acceptedFile = acceptedFiles.slice(-1)[0];
-        const filename = acceptedFile.name || ``;
-        const extension = filename.split('.').pop()?.toLowerCase();
-        if (extension !== undefined && extension !== 'md') {
-            setTitle("file type is not supported");
-            setVisible({
-                ...state,
-                value: "このファイルのプレビューを表示できません。拡張子が`md`のファイルのみ対応しています。"
+        const acceptedFile = acceptedFiles.pop();
+        const filename = acceptedFile?.name.split(".");
+        const extension = filename?.pop();
+        if (extension !== undefined && extension.toLowerCase() !== "md") {
+            const newTitle = "file type is not supported";
+            const newText = "このファイルのプレビューを表示できません。拡張子が`md`のファイルのみ対応しています。";
+
+            setEditorState({
+                ...editorState,
+                value: newText
             });
+            dispatch(updateMarkdown({
+                title: newTitle,
+                text: newText,
+            }));
         }
         else {
-            const text = await acceptedFile.text();
-            setTitle(filename.split('.')[0]);
-            setVisible({
-                ...state,
-                value: text
+            const newTitle = filename?.join(".");
+            const newText = await acceptedFile?.text();
+            setEditorState({
+                ...editorState,
+                value: newText
             });
+            dispatch(updateMarkdown({
+                title: newTitle || "",
+                text: newText || "",
+            }));
         }
-    }, []);
+    }, [dispatch, editorState]);
     const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true });
 
     const saveAsMd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault();
 
-        const filename = `${mdTitle || "untitled"}.md`;
+        const filename = `${markdownState.title || "untitled"}.md`;
         const file = new File(
-            [state.value!],
+            [editorState.value!],
             filename,
-            { type: 'text/plain;charset=utf-8' }
+            {
+                type: "text/plain;charset=utf-8"
+            },
         );
         saveAs(file);
     }
 
     return (
-        <div data-color-mode='light' >
+        <div data-color-mode="light" >
             <input
-                type='text'
-                value={mdTitle}
-                className='title'
+                type="text"
+                value={markdownState.title}
+                className="title"
                 placeholder="タイトル"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    dispatch(updateMarkdown({
+                        ...markdownState,
+                        title: markdownState.title,
+                    }))
+                }
             />
 
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 <MDEditor
                     autoFocus
-                    value={state.value}
+                    value={editorState.value}
                     previewOptions={{
-                        linkTarget: '_blank',
+                        linkTarget: "_blank",
                         remarkPlugins: [remarkMath],
                         rehypePlugins: [rehypeKatex]
                     }}
                     height={400}
-                    highlightEnable={state.highlightEnable}
-                    hideToolbar={!state.hideToolbar}
-                    enableScroll={state.enableScroll}
-                    visibleDragbar={state.visibleDragbar}
+                    highlightEnable={editorState.highlightEnable}
+                    hideToolbar={!editorState.hideToolbar}
+                    enableScroll={editorState.enableScroll}
+                    visibleDragbar={editorState.visibleDragbar}
                     textareaProps={{
                         placeholder: "記事やレポートをMarkdown形式で記述してください",
                     }}
-                    preview={state.preview}
-                    onChange={(newValue = '') => {
-                        setVisible({ ...state, value: newValue });
+                    preview={editorState.preview}
+                    onChange={(newText = "") => {
+                        setEditorState({ ...editorState, value: newText });
+                        dispatch(updateMarkdown({
+                            ...markdownState,
+                            text: newText,
+                        }))
                     }}
                 />
             </div>
 
-            <div className='doc-tools'>
+            <div className="doc-tools">
                 <label>
                     <input
-                        type='checkbox'
-                        checked={state.visibleDragbar}
+                        type="checkbox"
+                        checked={editorState.visibleDragbar}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setVisible({ ...state, visibleDragbar: e.target.checked });
+                            setEditorState({ ...editorState, visibleDragbar: e.target.checked });
                         }}
                     />
                     ドラッグバー
                 </label>
                 <label>
                     <input
-                        type='checkbox'
-                        checked={state.highlightEnable}
+                        type="checkbox"
+                        checked={editorState.highlightEnable}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setVisible({ ...state, highlightEnable: e.target.checked });
+                            setEditorState({ ...editorState, highlightEnable: e.target.checked });
                         }}
                     />
                     ハイライト
                 </label>
                 <label>
                     <input
-                        type='checkbox'
-                        checked={state.enableScroll}
+                        type="checkbox"
+                        checked={editorState.enableScroll}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setVisible({ ...state, enableScroll: e.target.checked });
+                            setEditorState({ ...editorState, enableScroll: e.target.checked });
                         }}
                     />
                     同時スクロール
                 </label>
                 <label>
                     <input
-                        type='checkbox'
-                        checked={state.hideToolbar}
+                        type="checkbox"
+                        checked={editorState.hideToolbar}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setVisible({ ...state, hideToolbar: e.target.checked });
+                            setEditorState({ ...editorState, hideToolbar: e.target.checked });
                         }}
                     />
                     ツールバー
                 </label>
-                <div className='save-button'>
+                <div className="save-button">
                     <button
-                        type='button'
-                        disabled={!state.value}
+                        type="button"
+                        disabled={!editorState.value}
                         style={{ marginLeft: 10 }}
                         onClick={saveAsMd}
                     >
@@ -153,15 +169,15 @@ const Editor = () => {
                     <ReactToPrint
                         trigger={() => (
                             <button
-                                type='button'
-                                disabled={!state.value}
+                                type="button"
+                                disabled={!editorState.value}
                                 style={{ marginLeft: 10 }}
                             >
                                 PDF形式にエクスポート
                             </button>
                         )}
                         content={() => pdfRef.current}
-                        documentTitle={`${mdTitle || "untitled"}.pdf`}
+                        documentTitle={`${markdownState.title || "untitled"}.pdf`}
                     />
                 </div>
             </div>
@@ -170,8 +186,8 @@ const Editor = () => {
             <hr />
             <h3>PDF Preview</h3>
             <div ref={pdfRef}>
-                {state.value && (
-                    state.value.split('<br>').map((section) => <PdfPreview source={section} />)
+                {editorState.value && (
+                    editorState.value.split("<br>").map((section) => <PdfPreview source={section} />)
                 )}
             </div>
         </div >
