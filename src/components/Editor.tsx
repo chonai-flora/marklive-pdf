@@ -58,8 +58,8 @@ const Editor = () => {
     }, [dispatch, editorState]);
     const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true });
 
-    const saveAsMd = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        e.preventDefault();
+    const saveAsMd = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.preventDefault();
 
         const filename = `${markdownState.title || "untitled"}.md`;
         const file = new File(
@@ -79,10 +79,10 @@ const Editor = () => {
                 value={markdownState.title}
                 className="title"
                 placeholder="タイトル"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                     dispatch(updateMarkdown({
                         ...markdownState,
-                        title: markdownState.title,
+                        title: event.target.value,
                     }))
                 }
             />
@@ -117,47 +117,50 @@ const Editor = () => {
             </div>
 
             <div className="doc-tools">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={editorState.visibleDragbar}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setEditorState({ ...editorState, visibleDragbar: e.target.checked });
-                        }}
-                    />
-                    ドラッグバー
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={editorState.highlightEnable}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setEditorState({ ...editorState, highlightEnable: e.target.checked });
-                        }}
-                    />
-                    ハイライト
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={editorState.enableScroll}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setEditorState({ ...editorState, enableScroll: e.target.checked });
-                        }}
-                    />
-                    同時スクロール
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={editorState.hideToolbar}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setEditorState({ ...editorState, hideToolbar: e.target.checked });
-                        }}
-                    />
-                    ツールバー
-                </label>
-                <div className="save-button">
+                <div style={{ display: "flex", gap: "0.5em" }}>
+                    <label className="checkbox">
+                        <input
+                            type="checkbox"
+                            checked={editorState.visibleDragbar}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setEditorState({ ...editorState, visibleDragbar: event.target.checked });
+                            }}
+                        />
+                        ドラッグバー
+                    </label>
+                    <label className="checkbox">
+                        <input
+                            type="checkbox"
+                            checked={editorState.highlightEnable}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setEditorState({ ...editorState, highlightEnable: event.target.checked });
+                            }}
+                        />
+                        ハイライト
+                    </label>
+                    <label className="checkbox">
+                        <input
+                            type="checkbox"
+                            checked={editorState.enableScroll}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setEditorState({ ...editorState, enableScroll: event.target.checked });
+                            }}
+                        />
+                        同時スクロール
+                    </label>
+                    <label className="checkbox">
+                        <input
+                            type="checkbox"
+                            checked={editorState.hideToolbar}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setEditorState({ ...editorState, hideToolbar: event.target.checked });
+                            }}
+                        />
+                        ツールバー
+                    </label>
+                </div>
+
+                <div className="save">
                     <button
                         type="button"
                         disabled={!editorState.value}

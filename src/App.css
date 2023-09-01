@@ -15,25 +15,14 @@ html {
 }
 
 .warpper {
-    padding: 0 20px 50px 20px;
     margin: 0 auto;
     max-width: 950px;
+    padding: 0 20px 50px 20px;
 
     .page-title {
-        padding: 26px 0 20px 0;
-        font-weight: bold;
         font-size: 16px;
-    }
-
-    .badges {
-        text-align: center;
-        padding-bottom: 20px;
-
-        a {
-            text-decoration: none;
-            display: inline-block;
-            margin: 0 3px;
-        }
+        font-weight: bold;
+        padding: 26px 0 20px 0;
     }
 
     .title {
@@ -44,22 +33,21 @@ html {
     }
 
     .doc-tools {
-        padding: 1em 0 0 0;
+        display: flex;
         font-size: 12px;
+        padding: 1em 0 0 0;
 
-        .save-button {
-            float: right;
+        .save {
+            flex-grow: 1;
+            text-align: right;
         }
-        .save-button + * {
+        .save + * {
             clear: both;
         }
 
-        label {
-            user-select: none;
-
-            input {
-                vertical-align: middle;
-            }
+        .checkbox {
+            display: flex;
+            align-items: flex-start;
         }
     }
 }

@@ -9,8 +9,6 @@ $ c = \pm\sqrt{a^2 + b^2} $
 のように一行で表示するか、
 
 $
-S_n=\displaystyle\sum_{k=1}^{n} (x_k)^2
-\Rightarrow
 S_n=\sum_{k=1}^{n} (x_k)^2 
 \Rightarrow 
 {}^{i}_{j}T^{k}_{h}
