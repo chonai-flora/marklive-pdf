@@ -1,0 +1,77 @@
+.header {
+    text-align: center;
+}
+
+.footer {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.warpper {
+    margin: 0 auto;
+    max-width: 950px;
+    padding: 0 20px 50px 20px;
+
+    .page-title {
+        font-size: 16px;
+        font-weight: bold;
+        padding: 26px 0 20px 0;
+    }
+
+    .title {
+        width: calc(100% - 10px);
+        font-size: 1em;
+        margin-bottom: 1vh;
+        padding: 0.5em 0.25em 0.5em 0.25em;
+    }
+
+    .doc-tools {
+        display: flex;
+        font-size: 12px;
+        padding: 1em 0 0 0;
+
+        .save {
+            flex-grow: 1;
+            text-align: right;
+        }
+        .save + * {
+            clear: both;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: flex-start;
+        }
+    }
+}
+
+@media all {
+    .page-break {
+        display: none;
+    }
+}
+  
+@media print {
+    html, body {
+        height: initial !important;
+        overflow: initial !important;
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+@media print {
+    .page-break {
+        margin-top: 1rem;
+        display: block;
+        page-break-before: auto;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 30px;
+}
+
+img {
+    width: min(50%, 25em);
+}
